@@ -16,21 +16,21 @@ const client = new Client({
 });
 
 const Webhooks = new ArcheType();
-const regex = /(twitter\.com|x\.com|fxtwitter\.com)/gm;
+const regex = /https?:\/\/(twitter\.com|x\.com|fxtwitter\.com)/gm;
 
 client
 	.once('ready', () => onReady(client))
 	.on('guildCreate', async (guild: Guild) => onguildCreate(client, guild))
 	.on('messageCreate', async (message: Message) => {
+		if (message.content === 'fx!delete' && message.guild) {
+			await Webhooks.deleteWebhook(message.guild);
+			if (message.channel.type === ChannelType.GuildText) return message.channel.send('Webhooks deleted.');
+		}
 		if (!message.content || message.author.bot || message.content.search(regex) === -1) return;
 		if (message.channel.type === ChannelType.GuildText) {
-			message.content = message.content.replace(regex, 'fxtwitter.com');
+			message.content = message.content.replace(regex, 'https://fxtwitter.com');
 			message.delete();
 			Webhooks.send(message, message.channel);
-		}
-		if (message.content === 'fx!delete' && message.guild) {
-			Webhooks.deleteWebhook(message.guild);
-			message.channel.send('Webhooks deleted.');
 		}
 	})
 	.login(process.env.TOKEN);
