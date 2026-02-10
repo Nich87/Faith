@@ -21,7 +21,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"discord.js": "^14.16.3",
-		"dotenv": "^16.4.5"
+		"dotenv": "^17.2.4"
 	},
 	"devDependencies": {
 		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
